@@ -1,2 +1,2 @@
-# hotel-booking-system-backend
-This is the backend repository for hotel booking system
+# hotel-booking-application-backend
+This is the backend repository for a hotel booking application
