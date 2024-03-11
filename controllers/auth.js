@@ -40,12 +40,12 @@ const signup = async (req, res) => {
 const signin = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: email });
         if (user === null) {
             res.status(BAD_REQUEST_STATUS_CODE).send({ message: ErrorConstants.INVALID_EMAIL });
         }
         else {
-            if (comparePassword(password)) {
+            if (comparePassword(password, user.password)) {
                 const token = generateToken(email);
                 res.status(SUCCESS_STATUS_CODE).send({
                     message: ResponseConstants.USER_LOGIN_SUCCESS,
