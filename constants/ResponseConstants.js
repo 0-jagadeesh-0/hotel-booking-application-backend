@@ -3,4 +3,4 @@ const ResponseConstants = {
     USER_LOGIN_SUCCESS: 'User logged in success.'
 }
 
-module.exports = ResponseConstants
+module.exports = ResponseConstants;

@@ -3,6 +3,7 @@ const { INTERNAL_SERVER_ERROR_STATUS_CODE, CREATION_SUCCESS_STATUS_CODE, SUCCESS
 const { getRandomRoom } = require('../helper/hotelHelper');
 const BookingDetails = require('../models/bookingDetails');
 const { getAvailableRoomsInHotel } = require('./hotel');
+const ResponseConstants = require('../constants/responseConstants');
 
 const addBookingDetails = async (req, res) => {
     try {

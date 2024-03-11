@@ -3,6 +3,7 @@ const { BAD_REQUEST_STATUS_CODE, SUCCESS_STATUS_CODE, INTERNAL_SERVER_ERROR_STAT
 const User = require('../models/user');
 const { hashPassword, comparePassword } = require('../utils/bcryptUtils');
 const { generateToken } = require('../utils/jwtUtils');
+const ResponseConstants = require('../constants/responseConstants');
 
 const signup = async (req, res) => {
     const { firstName, lastName, email, mobileNumber, password } = req.body;
