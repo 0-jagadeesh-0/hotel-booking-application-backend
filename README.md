@@ -48,7 +48,7 @@ This is the backend repository for a hotel booking application
 #### Signup User(POST)
    - /api/v1/auth/signup
    - User can signup by adding firstName, lastName, email, mobileNumber and password.
-### Signin User(POST)
+#### Signin User(POST)
    - /api/v1/auth/signup
    - User can signin with email and password.
 
@@ -84,6 +84,6 @@ This is the backend repository for a hotel booking application
    - creates new hotel booking
 
 #### Booking History of a user(GET)
-    - /api/v1/bookings/history/:userId (where userId is the path variable)
-    - Fetches the booking history of the user.
+   - /api/v1/bookings/history/:userId (where userId is the path variable)
+   - Fetches the booking history of the user.
 
