@@ -3,7 +3,6 @@ const { BAD_REQUEST_STATUS_CODE, SUCCESS_STATUS_CODE, INTERNAL_SERVER_ERROR_STAT
 const User = require('../models/user');
 const { hashPassword, comparePassword } = require('../utils/bcryptUtils');
 const { generateToken } = require('../utils/jwtUtils');
-const ResponseConstants = require('../constants/responseConstants');
 
 const signup = async (req, res) => {
     const { firstName, lastName, email, mobileNumber, password } = req.body;
@@ -25,7 +24,7 @@ const signup = async (req, res) => {
         const token = generateToken(email);
         const user = await newUser.save();
         res.status(CREATION_SUCCESS_STATUS_CODE).send({
-            message: ResponseConstants.USER_CREATION_MESSAGE,
+            message: 'User signed up successfully',
             data: { userId: user._id, firstName, lastName, email, mobileNumber, token }
         });
     }
@@ -48,7 +47,7 @@ const signin = async (req, res) => {
             if (comparePassword(password, user.password)) {
                 const token = generateToken(email);
                 res.status(SUCCESS_STATUS_CODE).send({
-                    message: ResponseConstants.USER_LOGIN_SUCCESS,
+                    message: 'User logged in success.',
                     data: { userId: user._id, email, token }
                 })
             }

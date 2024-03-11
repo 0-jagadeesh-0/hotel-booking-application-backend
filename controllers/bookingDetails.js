@@ -3,7 +3,6 @@ const { INTERNAL_SERVER_ERROR_STATUS_CODE, CREATION_SUCCESS_STATUS_CODE, SUCCESS
 const { getRandomRoom } = require('../helper/hotelHelper');
 const BookingDetails = require('../models/bookingDetails');
 const { getAvailableRoomsInHotel } = require('./hotel');
-const ResponseConstants = require('../constants/responseConstants');
 
 const addBookingDetails = async (req, res) => {
     try {
@@ -21,7 +20,7 @@ const addBookingDetails = async (req, res) => {
         });
         await newBooking.save();
         res.status(CREATION_SUCCESS_STATUS_CODE).send({
-            message: ResponseConstants.USER_CREATION_MESSAGE
+            message: 'Booking success'
         });
     }
     catch (err) {
