@@ -1,6 +1,5 @@
 const ErrorConstants = require('../constants/ErrorConstsnts');
 const { INTERNAL_SERVER_ERROR_STATUS_CODE, CREATION_SUCCESS_STATUS_CODE, SUCCESS_STATUS_CODE } = require('../constants/ResponseStatusCode');
-const ResponseConstants = require('../constants/responseConstants');
 const { getRandomRoom } = require('../helper/hotelHelper');
 const BookingDetails = require('../models/bookingDetails');
 const { getAvailableRoomsInHotel } = require('./hotel');
