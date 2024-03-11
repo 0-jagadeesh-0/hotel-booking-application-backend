@@ -1,14 +1,19 @@
 const ErrorConstants = require('../constants/ErrorConstsnts');
 const { INTERNAL_SERVER_ERROR_STATUS_CODE, CREATION_SUCCESS_STATUS_CODE, SUCCESS_STATUS_CODE } = require('../constants/ResponseStatusCode');
 const ResponseConstants = require('../constants/responseConstants');
+const { getRandomRoom } = require('../helper/hotelHelper');
 const BookingDetails = require('../models/bookingDetails');
+const { getAvailableRoomsInHotel } = require('./hotel');
 
 const addBookingDetails = async (req, res) => {
     try {
-        const { userId, roomId, hotelId, checkInDate, checkOutDate, bookingAmount } = req.body;
+        const { userId, roomType, hotelId, checkInDate, checkOutDate, bookingAmount } = req.body;
+        const availableRooms = await getAvailableRoomsInHotel(hotelId, checkInDate, checkOutDate);
+        const filterRoomByType = availableRooms.filter(room => room.type === roomType);
+        const allotedRoom = getRandomRoom(filterRoomByType);
         const newBooking = new BookingDetails({
             userId,
-            roomNo,
+            roomNo: allotedRoom.number,
             hotelId,
             checkInDate,
             checkOutDate,
@@ -29,10 +34,23 @@ const addBookingDetails = async (req, res) => {
 
 const getUserBookingDetails = async (req, res) => {
     try {
-        const { userId } = req.params.userId;
-        const bookingDetails = await BookingDetails.find({ userId: userId });
+        const userId = req.params.userId;
+        const bookingDetails = await BookingDetails.find({ userId: userId }).populate('hotelId');
+        let bookings = [];
+        bookingDetails.forEach(booking => {
+            const bookingData = {
+                bookingId: booking._id,
+                checkin: booking.checkInDate,
+                checkout: booking.checkOutDate,
+                room: booking.hotelId.rooms[booking.roomNo],
+                hotel: booking.hotelId.name,
+                amount: booking.bookingAmount,
+                bookingDate: booking.createdAt
+            }
+            bookings.push(bookingData);
+        });
         res.status(SUCCESS_STATUS_CODE).send({
-            data: bookingDetails
+            data: bookings
         });
     }
     catch (err) {

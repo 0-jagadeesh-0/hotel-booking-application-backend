@@ -31,26 +31,21 @@ const getHotelById = async (req, res) => {
     }
 }
 
-// const getHotelCities = async (req, res) => {
-//     try {
-//         const hotels = await Hotel.find();
-//         let cities = [];
-//         hotels.forEach(hotel => {
-//             let location = hotel.location.city;
-//             console.log(location);
-//             cities.push(location);
-//         })
-//         const uniqueCities = [...new Set(cities)]
 
-//         res.send(uniqueCities)
-//     }
-//     catch (err) {
-//         console.error(err);
-//         res.status(INTERNAL_SERVER_ERROR_STATUS_CODE).send({
-//             message: ErrorConstants.INTERNAL_SERVER_ERROR
-//         })
-//     }
-// }
+const getAvailableRoomsInHotel = async (hotelId, checkInDate, checkOutDate) => {
+    const bookingDetailsByHotelId = await BookingDetails.find({
+        hotelId: hotelId,
+        checkInDate: { $lte: new Date(checkOutDate) },
+        checkOutDate: { $gte: new Date(checkInDate) }
+    });
+    const unavailableRooms = [...new Set(bookingDetailsByHotelId.map(booking => {
+        return booking.roomNo;
+    }))];
+    const hotelDetails = await Hotel.findById(hotelId);
+    const rooms = hotelDetails.rooms;
+    const availableRooms = rooms.filter(room => !unavailableRooms.includes(room.number));
+    return availableRooms;
+}
 
 
 const getAvailableHotelsBySelectionFilter = async (req, res) => {
@@ -58,17 +53,7 @@ const getAvailableHotelsBySelectionFilter = async (req, res) => {
         const { hotelId } = req.params;
         const checkInDate = req.query.checkInDate;
         const checkOutDate = req.query.checkInDate;
-        const bookingDetailsByHotelId = await BookingDetails.find({
-            hotelId: hotelId,
-            checkInDate: { $lte: new Date(checkOutDate) },
-            checkOutDate: { $gte: new Date(checkInDate) }
-        });
-        const unavailableRooms = [...new Set(bookingDetailsByHotelId.map(booking => {
-            return booking.roomNo;
-        }))];
-        const hotelDetails = await Hotel.findById(hotelId);
-        const rooms = hotelDetails.rooms;
-        const availableRooms = rooms.filter(room => !unavailableRooms.includes(room.number));
+        const availableRooms = await getAvailableRoomsInHotel(hotelId, checkInDate, checkOutDate);
         res.status(SUCCESS_STATUS_CODE).send(availableRooms);
     }
     catch (err) {
@@ -99,4 +84,4 @@ const getHotelsByCity = async (req, res) => {
     }
 }
 
-module.exports = { getAllHotels, getHotelById, getAvailableHotelsBySelectionFilter, getHotelsByCity };
+module.exports = { getAllHotels, getHotelById, getAvailableHotelsBySelectionFilter, getHotelsByCity, getAvailableRoomsInHotel };

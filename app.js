@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const authRoutes = require('./routes/auth');
 const hotelRoutes = require('./routes/hotel');
 const userRoutes = require('./routes/user');
+const bookingRoutes = require('./routes/bookingDetails');
 
 const cors = require('cors');
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use('/api/v1/auth/', authRoutes);
 app.use('/api/v1/hotels/', hotelRoutes);
 app.use('/api/v1/users/', userRoutes);
+app.use('/api/v1/bookings/', bookingRoutes);
 
 
 app.listen(process.env.PORT, () => {

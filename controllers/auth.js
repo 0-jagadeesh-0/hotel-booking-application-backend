@@ -42,7 +42,7 @@ const signin = async (req, res) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
         if (user === null) {
-            res.status(BAD_REQUEST_STATUS_CODE).send(ErrorConstants.INVALID_EMAIL);
+            res.status(BAD_REQUEST_STATUS_CODE).send({ message: ErrorConstants.INVALID_EMAIL });
         }
         else {
             if (comparePassword(password)) {
@@ -53,7 +53,7 @@ const signin = async (req, res) => {
                 })
             }
             else {
-                res.status(BAD_REQUEST_STATUS_CODE).send(ErrorConstants.INVALID_PASSWORD);
+                res.status(BAD_REQUEST_STATUS_CODE).send({ message: ErrorConstants.INVALID_PASSWORD });
             }
         }
     }
